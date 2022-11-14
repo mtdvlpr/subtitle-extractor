@@ -85,7 +85,7 @@ export default {
     },
     redirects: [
       {
-        from: '/subs/*',
+        from: 'https://www.whateverorigin.org/*',
         to: 'http://www.whateverorigin.org/:splat',
         status: 200,
         force: true,
