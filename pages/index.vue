@@ -13,8 +13,9 @@
             gemaakt. Het kan dus zijn dat er geen ondertiteling beschikbaar is.
           </p>
           <p>
-            Open het filmpje dat je wilt downloaden op jw.org. Kopieer de url,
-            plak die onderin en druk op zoeken.
+            Open het filmpje dat je wilt downloaden op jw.org of klik op 'deel
+            link' in de JW Library app. Kopieer de url, plak die onderin en druk
+            op zoeken.
           </p>
         </v-card-text>
         <v-card-actions>
@@ -106,7 +107,15 @@ export default defineComponent({
     },
     videoId(): string {
       if (!this.videoUrl) return ''
-      return this.videoUrl.split('/').pop() ?? ''
+      const params = new URLSearchParams(this.videoUrl)
+      const lank = params.get('lank')
+      const item = params.get('item')
+      if (lank && lank.endsWith('_VIDEO')) return lank
+      if (item && item.endsWith('_VIDEO')) return item
+      if (this.videoUrl.endsWith('_VIDEO')) {
+        return this.videoUrl.split('/').pop() ?? ''
+      }
+      return ''
     },
     resultTitle(): string {
       return this.loading ? 'Zoeken...' : this.video?.title ?? 'Geen resultaat'
