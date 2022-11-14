@@ -60,10 +60,10 @@
       <v-card v-if="loading || video">
         <v-card-title class="headline">{{ resultTitle }}</v-card-title>
         <div id="video-container" />
-        <v-card-text v-if="loading" class="d-flex justify-center">
+        <v-card-text v-if="loading | loadingVid" class="d-flex justify-center">
           <v-progress-circular indeterminate color="primary" />
         </v-card-text>
-        <v-card-actions v-else>
+        <v-card-actions v-if="!loading">
           <v-row>
             <v-col cols="12" sm="6" align="left">
               <v-btn color="primary" @click="download(video.url)">
@@ -98,6 +98,7 @@ export default defineComponent({
       videoUrl: '',
       res: '720p',
       loading: false,
+      loadingVid: false,
       video: null as null | Video,
       resolutions: ['360p', '480p', '720p'] as string[],
     }
@@ -134,6 +135,7 @@ export default defineComponent({
       }
 
       this.loading = true
+      this.loadingVid = true
       this.video = null
       try {
         if (!this.videoId) {
@@ -177,6 +179,8 @@ export default defineComponent({
           subtitles,
         }
 
+        this.loading = false
+
         const subs = await axios.get(
           `https://www.whateverorigin.org/get?url=${encodeURIComponent(
             subtitles
@@ -211,6 +215,7 @@ export default defineComponent({
         )
       } finally {
         this.loading = false
+        this.loadingVid = false
       }
     },
   },
