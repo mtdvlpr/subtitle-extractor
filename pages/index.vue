@@ -182,9 +182,7 @@ export default defineComponent({
         this.loading = false
 
         const subs = await axios.get(
-          `https://www.whateverorigin.org/get?url=${encodeURIComponent(
-            subtitles
-          )}`
+          `https://api.allorigins.win/get?url=${encodeURIComponent(subtitles)}`
         )
 
         const container = document.getElementById(
