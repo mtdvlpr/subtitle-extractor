@@ -178,9 +178,7 @@ export default defineComponent({
         }
 
         const subs = await axios.get(
-          `http://www.whateverorigin.org/get?url=${encodeURIComponent(
-            subtitles
-          )}`
+          `/subs/get?url=${encodeURIComponent(subtitles)}`
         )
 
         const container = document.getElementById(

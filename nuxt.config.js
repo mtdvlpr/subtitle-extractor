@@ -83,6 +83,14 @@ export default {
         'Permissions-Policy: camera=(), display-capture=(), document-domain=(), geolocation=(), microphone=(), payment=(), usb=()',
       ],
     },
+    redirects: [
+      {
+        from: '/subs/*',
+        to: 'http://www.whateverorigin.org/:splat',
+        status: 200,
+        force: true,
+      },
+    ],
   },
 
   generate: {
