@@ -83,6 +83,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
+import axios from 'axios'
 import { MediaItemResult } from '~/types'
 interface Video {
   title: string
@@ -176,6 +177,12 @@ export default defineComponent({
           subtitles,
         }
 
+        const subs = await axios.get(
+          `http://www.whateverorigin.org/get?url=${encodeURIComponent(
+            subtitles
+          )}`
+        )
+
         const container = document.getElementById(
           'video-container'
         ) as HTMLDivElement
@@ -187,7 +194,9 @@ export default defineComponent({
 
         const track = document.createElement('track')
         track.kind = 'subtitles'
-        track.src = subtitles
+        track.src = URL.createObjectURL(
+          new Blob([subs.data.contents], { type: 'text/vtt' })
+        )
         track.label = 'Nederlands'
         track.srclang = 'nl'
         track.default = true
