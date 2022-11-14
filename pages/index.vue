@@ -12,6 +12,10 @@
             De ondertiteling komt van de officiële website en wordt niet zelf
             gemaakt. Het kan dus zijn dat er geen ondertiteling beschikbaar is.
           </p>
+          <p>
+            Open het filmpje dat je wilt downloaden op jw.org. Kopieer de url,
+            plak die onderin en druk op zoeken.
+          </p>
         </v-card-text>
         <v-card-actions>
           <v-form
@@ -19,15 +23,18 @@
             v-model="valid"
             style="width: 100%"
             lazy-validation
+            @submit.prevent="search()"
           >
             <v-row>
               <v-col cols="8">
                 <v-text-field
                   v-model="videoUrl"
                   label="Video URL"
+                  clearable
                   :rules="[
                     (v) => !!v || 'URL is verplicht',
-                    (v) => v.includes('jw.org') || 'URL moet van jw.org zijn',
+                    (v) =>
+                      !v || v.includes('jw.org') || 'URL moet van jw.org zijn',
                   ]"
                   placeholder="https://www.jw.org/nl/bibliotheek/videos/#nl/mediaitems/StudioMonthlyPrograms/pub-jwb-094_1_VIDEO"
                 />
@@ -40,7 +47,7 @@
                 />
               </v-col>
               <v-col cols="12" align="right">
-                <v-btn color="primary" @click="searchSubtitles()">Zoeken</v-btn>
+                <v-btn type="submit" color="primary">Zoeken</v-btn>
               </v-col>
             </v-row>
           </v-form>
@@ -109,17 +116,24 @@ export default defineComponent({
     download(url: string) {
       window.open(url, '_blank')
     },
-    async searchSubtitles() {
+    async search() {
       // @ts-ignore
       if (!this.$refs.form?.validate()) {
         return
       }
+
       this.loading = true
+      this.video = null
       try {
+        if (!this.videoId) {
+          throw new Error('Vul een geldige URL in voor een filmpje van jw.org')
+        }
+
         const result = await Promise.allSettled([
           this.$axios.$get(`E/${this.videoId}`) as Promise<MediaItemResult>,
           this.$axios.$get(`O/${this.videoId}`) as Promise<MediaItemResult>,
         ])
+
         const english =
           result[0].status === 'fulfilled' ? result[0].value : null
         const dutch = result[1].status === 'fulfilled' ? result[1].value : null
@@ -136,7 +150,9 @@ export default defineComponent({
 
         const englishFile = englishVid.files.find((m) => m.label === this.res)
         if (!file || !englishFile) {
-          throw new Error('Kon geen bestand vinden voor de gekozen resolutie.')
+          throw new Error(
+            'Kon geen filmpje vinden voor de gekozen resolutie. Probeer een andere resolutie.'
+          )
         }
 
         const subtitles = file.subtitles?.url

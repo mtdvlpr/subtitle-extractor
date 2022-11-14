@@ -9,10 +9,9 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - subtitle-extractor',
-    title: 'subtitle-extractor',
+    title: 'Ondertiteling downloader',
     htmlAttrs: {
-      lang: 'en',
+      lang: 'nl',
     },
     meta: [
       { charset: 'utf-8' },
