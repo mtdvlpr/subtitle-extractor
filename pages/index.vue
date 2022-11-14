@@ -59,6 +59,7 @@
     <v-col cols="12" sm="10" md="8" lg="6">
       <v-card v-if="loading || video">
         <v-card-title class="headline">{{ resultTitle }}</v-card-title>
+        <div id="video-container" />
         <v-card-text v-if="loading" class="d-flex justify-center">
           <v-progress-circular indeterminate color="primary" />
         </v-card-text>
@@ -174,6 +175,26 @@ export default defineComponent({
           url: englishFile.progressiveDownloadURL,
           subtitles,
         }
+
+        const container = document.getElementById(
+          'video-container'
+        ) as HTMLDivElement
+        const videoEl = document.createElement('video')
+        videoEl.src = this.video.url
+        videoEl.poster = video.images.wss.lg
+        videoEl.controls = true
+        videoEl.style.width = '100%'
+
+        const track = document.createElement('track')
+        track.kind = 'subtitles'
+        track.src = subtitles
+        track.label = 'Nederlands'
+        track.srclang = 'nl'
+        track.default = true
+
+        videoEl.appendChild(track)
+        container.appendChild(videoEl)
+        videoEl.load()
       } catch (e: any) {
         console.error(e)
         alert(
