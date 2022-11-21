@@ -1,5 +1,7 @@
 # subtitle-extractor
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a4f1598e-f8be-4059-ab2b-7fe4a4f967ac/deploy-status)](https://app.netlify.com/sites/ondertiteling/deploys)
+
 ## Build Setup
 
 ```bash
