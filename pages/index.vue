@@ -137,6 +137,7 @@ export default defineComponent({
       this.loading = true
       this.loadingVid = true
       this.video = null
+      document.querySelectorAll('video').forEach((v) => v.remove())
       try {
         if (!this.videoId) {
           throw new Error('Vul een geldige URL in voor een filmpje van jw.org')
