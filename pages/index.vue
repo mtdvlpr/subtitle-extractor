@@ -15,7 +15,7 @@
           <p>
             Open het filmpje dat je wilt downloaden op jw.org of klik op 'deel
             link' in de JW Library app. Kopieer de url, plak die onderin en druk
-            op zoeken.
+            op zoeken. Voor meer informatie over het gebruik van deze site, <a href="/media met NL ondertiteling.pdf" target="_blank">zie de handleiding</a>.
           </p>
         </v-card-text>
         <v-card-actions>
