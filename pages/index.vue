@@ -15,7 +15,10 @@
           <p>
             Open het filmpje dat je wilt downloaden op jw.org of klik op 'deel
             link' in de JW Library app. Kopieer de url, plak die onderin en druk
-            op zoeken. Voor meer informatie over het gebruik van deze site, <a href="/media met NL ondertiteling.pdf" target="_blank">zie de handleiding</a>.
+            op zoeken. Voor meer informatie over het gebruik van deze site,
+            <a href="/media met NL ondertiteling.pdf" target="_blank"
+              >zie de handleiding</a
+            >.
           </p>
         </v-card-text>
         <v-card-actions>
@@ -113,8 +116,10 @@ export default defineComponent({
       const params = new URLSearchParams(this.videoUrl)
       const lank = params.get('lank')
       const item = params.get('item')
+      const docid = params.get('docid')
       if (lank && lank.endsWith('_VIDEO')) return lank
       if (item && item.endsWith('_VIDEO')) return item
+      if (docid) return `docid-${docid}_1_VIDEO`
       if (this.videoUrl.endsWith('_VIDEO')) {
         return this.videoUrl.split('/').pop() ?? ''
       }
@@ -182,10 +187,6 @@ export default defineComponent({
 
         this.loading = false
 
-        const subs = await axios.get(
-          `https://api.allorigins.win/get?url=${encodeURIComponent(subtitles)}`
-        )
-
         const container = document.getElementById(
           'video-container'
         ) as HTMLDivElement
@@ -195,18 +196,31 @@ export default defineComponent({
         videoEl.controls = true
         videoEl.style.width = '100%'
 
-        const track = document.createElement('track')
-        track.kind = 'subtitles'
-        track.src = URL.createObjectURL(
-          new Blob([subs.data.contents], { type: 'text/vtt' })
-        )
-        track.label = 'Nederlands'
-        track.srclang = 'nl'
-        track.default = true
+        try {
+          const subs = await axios.get(
+            `https://api.allorigins.win/get?url=${encodeURIComponent(
+              subtitles
+            )}`
+          )
 
-        videoEl.appendChild(track)
-        container.appendChild(videoEl)
-        videoEl.load()
+          const track = document.createElement('track')
+          track.kind = 'subtitles'
+          track.src = URL.createObjectURL(
+            new Blob([subs.data.contents], { type: 'text/vtt' })
+          )
+          track.label = 'Nederlands'
+          track.srclang = 'nl'
+          track.default = true
+
+          videoEl.appendChild(track)
+        } catch (e: unknown) {
+          throw new Error(
+            'Kon de video niet met ondertiteling tonen. De ondertiteling kan wel gedownload worden.'
+          )
+        } finally {
+          container.appendChild(videoEl)
+          videoEl.load()
+        }
       } catch (e: any) {
         console.error(e)
         alert(

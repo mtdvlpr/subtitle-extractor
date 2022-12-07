@@ -4,7 +4,5 @@
     "source.fixAll.eslint": true,
     "source.fixAll.markdownlint": true
   },
-  "cSpell.words": [
-    "corejs"
-  ]
+  "cSpell.words": ["corejs", "docid"]
 }
