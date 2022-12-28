@@ -206,7 +206,7 @@ export default defineComponent({
           const track = document.createElement('track')
           track.kind = 'subtitles'
           track.src = URL.createObjectURL(
-            new Blob([subs.data.contents], { type: 'text/vtt' })
+            new Blob([Buffer.from(subs.data.contents.split(',')[1], 'base64')])
           )
           track.label = 'Nederlands'
           track.srclang = 'nl'
