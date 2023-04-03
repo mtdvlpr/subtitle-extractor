@@ -1,5 +1,12 @@
 <template>
   <v-row justify="center" align="center">
+    <v-banner color="blue">
+      Deze applicatie is samengevoegd met JW Cast. JW Cast heeft meer functies
+      en wordt beter onderhouden.
+      <template #actions>
+        <v-btn outlined @click="openJwCast">Ga naar JW Cast</v-btn>
+      </template>
+    </v-banner>
     <v-col cols="12" sm="10" md="8" lg="6">
       <v-card>
         <v-card-title class="headline"> Welkom! </v-card-title>
@@ -107,9 +114,9 @@ export default defineComponent({
     }
   },
   computed: {
-    size() {
+    size(): string {
       // @ts-ignore
-      return this.$vuetify.breakpoint.name
+      return this.$vuetify.breakpoint.name as string
     },
     videoId(): string {
       if (!this.videoUrl) return ''
@@ -130,6 +137,9 @@ export default defineComponent({
     },
   },
   methods: {
+    openJwCast() {
+      window.open('https://jwcast.semdev.nl/#/nl')
+    },
     download(url: string) {
       window.open(url, '_blank')
     },
