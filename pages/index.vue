@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center" align="center">
-    <v-banner color="blue">
+    <v-banner color="primary">
       Deze applicatie is samengevoegd met JW Cast. JW Cast heeft meer functies
       en wordt beter onderhouden.
       <template #actions>
